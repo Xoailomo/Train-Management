@@ -1,5 +1,20 @@
 package LinkedList;
 
+public class Node {
+
+    int info;
+    Node next;
+
+    public Node() {
+
+    }
+
+    public Node(int x, Node p) {
+        this.info = x;
+        this.next = p;
+    }
+   
+}
 public class MyList {
 
     Node head, tail;
