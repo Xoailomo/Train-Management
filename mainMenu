@@ -1,0 +1,10 @@
+// display main menu to go to each manager
+    public void menu() {
+        String content[] = {"Train", "Passenger", "Booking"};
+        System.out.println("******** main menu ********");
+        for (int i = 0; i < content.length; i++) {
+            System.out.println((i + 1) + ". " + content[i]);
+        }
+        System.out.println("0.exit");
+
+    }
