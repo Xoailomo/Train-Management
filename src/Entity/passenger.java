@@ -40,7 +40,11 @@ public class passenger {
     }
 
     public void setPhone(String phone) {
-        this.phone = phone;
+         if (phone.matches("\\d+")){ //xác định sđt chỉ chứa các chữ số
+            this.phone = phone;
+        } else {
+            throw new IllegalArgumentException("Số điện thoại chỉ chứa chữ số");
+        }  
     }
 
     @Override
