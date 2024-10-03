@@ -15,7 +15,7 @@ import java.io.ObjectOutputStream;
 
 public class fileIO {
 
-    // read and write file .txt
+
     public <T> void write(T data, String file) {
         FileOutputStream fos = null;
         try {
