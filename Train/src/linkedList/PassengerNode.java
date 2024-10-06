@@ -10,8 +10,8 @@ import Entity.Passenger;
  */
 public class PassengerNode {
 
-    Passenger info;
-    PassengerNode next;
+   public  Passenger info;
+    public PassengerNode next;
 
     public PassengerNode() {
     }
