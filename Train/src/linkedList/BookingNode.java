@@ -9,8 +9,8 @@ import Entity.Booking;
  * @author phank
  */
 class BookingNode {
-    Booking data; // Lưu trữ thông tin đặt vé
-    BookingNode next; // Con trỏ tới node tiếp theo
+    public Booking info; // Lưu trữ thông tin đặt vé
+    public BookingNode next; // Con trỏ tới node tiếp theo
 
     public BookingNode(Booking data) {
         this.data = data;
