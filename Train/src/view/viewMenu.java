@@ -21,18 +21,18 @@ import linkedList.TrainNode;
 public class viewMenu {
 
     // hiển thị menu chính
-    public void mainMenu() {
+    public static void mainMenu() {
         String content[] = {"Train", "Passenger", "Booking"};
         System.out.println("******** main menu ********");
         for (int i = 0; i < content.length; i++) {
             System.out.println((i + 1) + ". " + content[i]);
         }
-        System.out.println("0.exit");
+        System.out.println("0. exit");
 
     }
 
     // hiển thị menu của train
-    public void menuTrainList() {
+    public static void menuTrainList() {
         String content[] = {"Load from file", "Add to the end",
             "Display data", "Save list to file", "search by tcode",
             "Delete by tcode", "Sort by tcode", "Add to the begining",
@@ -46,11 +46,11 @@ public class viewMenu {
     }
 
     // hiển thị menu của passenger list
-    public void menuPassengerList() {
+    public static void menuPassengerList() {
+        System.out.println("******** passenger menu ********");
         String content[] = {"Load from file", "Add to the end",
             "Display data", "Save to file", "Search by pcode",
             "Delete by pcode", "Search by name", "Search trains by pcode"};
-        System.out.println("******** passenger menu ********");
         for (int i = 0; i < content.length; i++) {
             System.out.println((i + 1) + ". " + content[i]);
         }
@@ -58,64 +58,65 @@ public class viewMenu {
     }
 
     // hiển thị menu của booking list
-    public void menuBookingList() {
+    public static void menuBookingList() {
         String content[] = {"Load from file", "Booked Train",
             "Display data", "save to file", "Sort by tcode+pcode",
             "pay booking by tocde+pcode"};
-        for(int i=0;i<content.length;i++){
-            System.out.println("Enter "+content[i]+": ");
+        for (int i = 0; i < content.length; i++) {
+            System.out.println((i + 1) + ". " + content[i]);
         }
-        
+        System.out.println("0. exit");
     }
 
     // load train List
-    public void loadTrainData() {
+    public static void loadTrainData(int i) {
         String content[] = {"tcode", "name", "dstation", "astation",
             "dtime", "seat", "booked", "atime"};
-        for (int i = 0; i < content.length; i++) {
-            System.out.println("Enter " + content[i] + ": ");
-        }
+        System.out.println("Enter " + content[i] + ": ");
     }
 
     // lpad passenger List
-    public void loadPassengerData() {
+    public static void loadPassengerData(int i) {
         String content[] = {"pcode", "name", "phone"};
-        for (int i = 0; i < content.length; i++) {
-            System.out.println("Enter " + content[i] + ": ");
-        }
+        System.out.println("Enter " + content[i] + ": ");
     }
 
     // loa booking list
-    public void loadBookingData() {
+    public static void loadBookingData(int i) {
         String content[] = {"pcode", "tcode", "odate", "paid", "seat"};
-        for (int i = 0; i < content.length; i++) {
-            System.out.println("Enter " + content[i] + ": ");
-        }
+        System.out.print("Enter " + content[i] + ": ");
     }
 
-    // hiển thị đầu của bảng
-    public void tableHearder(int[] style, String[] header) {
+    // Display table header
+    public static void tableHeader(int[] style, String[] header) {
+        System.out.print("|");
         for (int i = 0; i < style.length; i++) {
+            System.out.print(tableCell(style[i], header[i]));
             System.out.print("|");
-            for (int j = 0; j < style[i]; j++) {
-                System.out.println(tableCell(style[i], header[i]));
-            }
-            System.out.println("|");
         }
+        System.out.println();
     }
 
-    // hiển thị các ô của bảng
-    public String tableCell(int style, String content) {
-        String s = content; // ? de lam gi
-        int offset = style - content.length();
-        for (int i = 0; i < style; i++) {
-            content += " ";
+// Display table cells, center-aligned
+    public static String tableCell(int style, String content) {
+        int padding = style - content.length();
+        int paddingLeft = padding / 2;
+        int paddingRight = padding - paddingLeft;
+
+        StringBuilder cellContent = new StringBuilder();
+        for (int i = 0; i < paddingLeft; i++) {
+            cellContent.append(" ");
         }
-        return content;
+        cellContent.append(content);
+        for (int i = 0; i < paddingRight; i++) {
+            cellContent.append(" ");
+        }
+
+        return cellContent.toString();
     }
 
-    // hiển thị đường viền của bảng
-    public void tableBorder(int[] style) {
+// Display table border
+    public static void tableBorder(int[] style) {
         for (int i = 0; i < style.length; i++) {
             System.out.print("+");
             for (int j = 0; j < style[i]; j++) {
@@ -125,22 +126,23 @@ public class viewMenu {
         System.out.println("+");
     }
 
-    // hiển thị train list
-    public void displayTrain(TrainList tl) {
-        String header[] = {"tcode", "train_name", "seat", "booked",
+// Display train list
+    public static void displayTrain(TrainList tl) {
+        String[] header = {"tcode", "train_name", "seat", "booked",
             "depart_time", "depart_place", "available_seat"};
-        int[] style = {10, 20, 10, 20, 15, 15, 15};
-        // in ra header
+        int[] style = {10, 20, 10, 10, 15, 15, 15};
+
+        // Print header and border
         tableBorder(style);
-        tableHearder(style, header);
+        tableHeader(style, header);
         tableBorder(style);
 
         TrainNode n = tl.head;
         while (n != null) {
             Train t = n.info;
-            tableHearder(style, new String[]{
-                t.tcode + "", t.name + "", t.seat + "", t.booked + "", t.dtime + "",
-                t.dstation + "", t.seat - t.booked + ""
+            tableHeader(style, new String[]{
+                t.tcode + "", t.name, t.seat + "", t.booked + "", t.dtime + "",
+                t.dstation, (t.seat - t.booked) + ""
             });
             tableBorder(style);
             n = n.next;
@@ -148,18 +150,18 @@ public class viewMenu {
     }
 
     // hiển thị passwnger list
-    public void displayPassenger(PassengerList pl) {
+    public static void displayPassenger(PassengerList pl) {
         String header[] = {"pcode", "passenger_name", "phone"};
         int[] style = {10, 20, 10};
         // in ra header
         tableBorder(style);
-        tableHearder(style, header);
+        tableHeader(style, header);
         tableBorder(style);
 
         PassengerNode n = pl.head;
         while (n != null) {
             Passenger p = n.info;
-            tableHearder(style, new String[]{
+            tableHeader(style, new String[]{
                 p.getPcode() + "", p.getName() + "", p.getPhone() + ""});
             tableBorder(style);
             n = n.next;
@@ -167,18 +169,18 @@ public class viewMenu {
     }
 
     // hiển thị booked list
-    public void displayBooking(BookingList bl) {
+    public static void displayBooking(BookingList bl) {
         String header[] = {"pcode", "tcode", "odate", "paid", "seat"};
         int[] style = {10, 10, 15, 10, 10};
         // in ra header
         tableBorder(style);
-        tableHearder(style, header);
+        tableHeader(style, header);
         tableBorder(style);
 
         BookingNode n = bl.head;
         while (n != null) {
             Booking p = n.info;
-            tableHearder(style, new String[]{
+            tableHeader(style, new String[]{
                 p.getPcode() + "", p.getTcode() + "", p.getOdate() + "", p.isPaid() + "", p.getSeat() + ""});
             tableBorder(style);
             n = n.next;
