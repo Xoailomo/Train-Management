@@ -4,6 +4,8 @@
  */
 package Controller;
 
+import Entity.Passenger;
+import Entity.Train;
 import File.fileIO;
 import Validate.validate;
 import java.util.Scanner;
@@ -17,6 +19,7 @@ import view.viewMenu;
  * @author phank
  */
 public class MenuManager {
+
     private Scanner sc;
     private fileIO fo;
     private TrainList llt;
@@ -28,10 +31,9 @@ public class MenuManager {
     private final String booking_fn = "booking.dat";
     private final String passenger_fn = "passenger.dat";
     private final String train_fn = "train.dat";
-        
+
     private void menuTrain(validate va) {
-        boolean alive = true;
-        while (alive) {
+        while (true) {
             view.mainMenu();
             switch (getInteger()) {
                 case 1: // load
@@ -40,31 +42,143 @@ public class MenuManager {
                     loadData(0, fn);
                     break;
                 case 2: // add to end
-                    System.out.print("**add train to end of list ");
-                    llt.addTrainToEnd(get);
-
+                    System.out.print("Add train to end of list: ");
+                    llt.addTrainToEnd(new Train());
+                    break;
                 case 3: // display data
+                    System.out.print("Display data: ");
+                    view.displayTrain(llt);
+                    break;
                 case 4: // save train list to file
+                    System.out.print("Enter file name: ");
+                    fn = sc.nextLine();
+                    saveData(0, fn);
+                    break;
                 case 5: // search by tcode
+                    System.out.print("Search by tcode: ");
+                    String code = sc.nextLine();
+                    llt.searchByTcode(code);
+                    break;
                 case 6: // delete by tcode
+                    System.out.print("Delete by tcode: ");
+                    code = sc.nextLine();
+                    llt.deleteByTcode(code);
+                    break;
                 case 7: // sort by tcode
+                    System.out.print("Sort by tcode: ");
+                    code = sc.nextLine();
+                    llt.sortByTcode();
+                    break;
                 case 8: // add to beginning
+                    System.out.println("Add train to the beginning of list: ");
+                    llt.addTrainToBeginning(new Train());
+                    break;
                 case 9: // add before position k
+                    int k = sc.nextInt();
+                    System.out.printf("Add before position %d",k);
+                    llt.addTrainBefore(k);
+                    break;
                 case 10: // delete position k
+                    k= sc.nextInt();
+                    System.out.print("Delete position k: ");
+                    llt.deletePosition(k);
+                    break;
                 case 11: // search by name
+                    System.out.print("Search by train name: ");
+                    String name = sc.nextLine();
+                    llt.searchByName(name);
+                    break;
                 case 12: // search booked by tcode
+                    System.out.print("Search booked by tcode; ");
+                    code = sc.nextLine();
+                    llt.searchBookedByTcode(code);
+                    break;
                 case 0: //exit
-
+                    System.exit(0);
+                    break;
             }
         }
     }
 
     private void menuPassenger() {
-
+        while(true){
+            view.displayPassenger(llp);
+            switch(getInteger()){
+                case 1: // load 
+                    System.out.print("Enter file name: ");
+                    String fn = sc.nextLine();
+                    loadData(0, fn);
+                    break;
+                case 2: // add to the end *****
+                    System.out.print("Add passenger to the end: ");
+                    llp.addToTheEnd(new Passenger());
+                    break;
+                case 3: // display
+                    System.out.print("Display all data: ");
+                    view.displayPassenger(llp);
+                    break;
+                case 4: // save to file
+                    System.out.println("Enter file name: ");
+                    fn = sc.nextLine();
+                    saveData(0, fn);
+                    break;
+                case 5: // search by pcode
+                    System.out.println("Search by pcode: ");
+                    String pcode = sc.nextLine();
+                    llp.searchByPcode(pcode);
+                    break;
+                case 6: // delete by pcode 
+                    System.out.println("Delete by pcode: ");
+                    pcode = sc.nextLine();
+                    llp.deleteByPcode(pcode);
+                    break;
+                case 7: // search by name
+                    System.out.println("Search by name: ");
+                    String name =sc.nextLine();
+                    llp.searchByName(name);
+                    break;
+                case 8: // search trains by pcode
+                    System.out.println("Search trains by pcode: ");
+                    pcode = sc.nextLine();
+                    llp.searchByPcode(pcode);
+                    break;
+                case 9: 
+                    System.exit(0);
+                    break;
+                    
+            }
+        }
     }
 
     private void menuBooking() {
-
+        while(true){
+            view.menuBookingList();
+            switch (getInteger()) {
+                case 1:// load
+                    System.out.println("Enter file name: ");
+                    String fn = sc.nextLine();
+                    loadData(0, fn);
+                    break;
+                case 2: // booked trained
+                    System.out.println("");
+                case 3: // display data
+                    System.out.println("display all data: ");
+                    view.displayBooking(llb);
+                    break;
+                case 4:  // save to file
+                    System.out.println("Enter file name: ");
+                    fn = sc.nextLine();
+                    saveData(0, fn);
+                    break;
+                case 5: // sort by tocode and pcode
+                case 6: // pay booking by tcode abd pcode
+                case 7: 
+                    System.exit(0);
+                    break;
+                
+                   
+            }
+        }
     }
 
     public int getInteger() {
@@ -73,16 +187,6 @@ public class MenuManager {
         } catch (Exception e) {
             return getInteger();
         }
-    }
-
-    public String getString() {
-        do {
-            String str = sc.nextLine();
-            if (str.matches(REGEX)) {
-                return str;
-            }
-            System.out.println(messageError);
-        } while (true);
     }
 
     public double getDouble() {
@@ -116,7 +220,7 @@ public class MenuManager {
         }
     }
 
-    public void saveData(int x) {
+    public void saveData(int x, String fn) {
         switch (x) {
             case 0:
                 fo.write(llt, train_fn);
@@ -139,4 +243,3 @@ public class MenuManager {
         }
     }
 }
-
