@@ -13,7 +13,7 @@ import Entity.Train;
  */
 public class BookingList {
 
-    private BookingNode head;
+    public BookingNode head;
 
     public BookingList() {
         this.head = null;
@@ -40,7 +40,7 @@ public class BookingList {
         }
 
         // Trường hợp hủy booking ở đầu danh sách
-        if (head.data.getTcode().equals(tcode) && head.data.getPcode().equals(pcode)) {
+        if (head.info.getTcode().equals(tcode) && head.info.getPcode().equals(pcode)) {
             head = head.next;
             return true;
         }
@@ -48,7 +48,7 @@ public class BookingList {
         // Tìm và hủy booking
         BookingNode current = head;
         BookingNode prev = null;
-        while (current != null && !(current.data.getTcode().equals(tcode) && current.data.getPcode().equals(pcode))) {
+        while (current != null && !(current.info.getTcode().equals(tcode) && current.info.getPcode().equals(pcode))) {
             prev = current;
             current = current.next;
         }
@@ -64,8 +64,8 @@ public class BookingList {
     public boolean updatePaymentStatus(String tcode, String pcode) {
         BookingNode temp = head;
         while (temp != null) {
-            if (temp.data.getTcode().equals(tcode) && temp.data.getPcode().equals(pcode)) {
-                temp.data.setPaid(true); // Đánh dấu trạng thái thanh toán
+            if (temp.info.getTcode().equals(tcode) && temp.info.getPcode().equals(pcode)) {
+                temp.info.setPaid(true); // Đánh dấu trạng thái thanh toán
                 return true;
             }
             temp = temp.next;
@@ -77,7 +77,7 @@ public class BookingList {
     public void display() {
         BookingNode temp = head;
         while (temp != null) {
-            System.out.println(temp.data);
+            System.out.println(temp.info);
             temp = temp.next;
         }
     }
