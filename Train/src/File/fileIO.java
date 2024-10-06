@@ -23,10 +23,11 @@ public class fileIO {
             ObjectOutputStream oos = new ObjectOutputStream(fos);
             oos.writeObject(data);
         } catch (FileNotFoundException e) {
-            System.out.println("file not found"+file);
+            System.out.println("File not found "+file);
         } catch (IOException e) {
-            System.out.println("unable to writie"+file);
+            System.out.println("unable to write "+file);
         } 
+        System.out.println("Write successfully!");
     }
     public <T> T read(String file){
         FileInputStream fis = null;
@@ -37,11 +38,11 @@ public class fileIO {
             fis.close();
             return (T) ois.readObject();
         }catch(FileNotFoundException e){
-            System.out.println("file not found"+file);
+            System.out.println("File not found "+file);
         }catch(IOException e){
-            System.out.println("Unable to read"+file);
+            System.out.println("Unable to read "+file);
         }catch(ClassNotFoundException e){
-            System.out.println("class not found");
+            System.out.println("Class not found");
         }
         return null;
     }
