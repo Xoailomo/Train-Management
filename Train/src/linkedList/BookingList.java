@@ -11,94 +11,171 @@ import Entity.Train;
  *
  * @author phank
  */
-public class BookingList {
+import java.io.*;
+import java.util.Date;
 
-    public BookingNode head;
+class Booking {
+    String bcode; // Mã booking
+    String tcode; // Mã tàu
+    String pcode; // Mã hành khách
+    String odate; // Ngày đặt vé
+    int paid; // Trạng thái thanh toán (0 - chưa thanh toán, 1 - đã thanh toán)
+    int seat; // Số ghế đã đặt
+
+    public Booking(String bcode, String tcode, String pcode, String odate, int paid, int seat) {
+        this.bcode = bcode;
+        this.tcode = tcode;
+        this.pcode = pcode;
+        this.odate = odate;
+        this.paid = paid;
+        this.seat = seat;
+    }
+}
+
+class BookingList {
+    private BookingNode head; // Đầu danh sách liên kết
 
     public BookingList() {
-        this.head = null;
+        this.head = null; // Khởi tạo danh sách rỗng
     }
 
-    // Thêm booking vào cuối danh sách
-    public void addBooking(Booking booking) {
-        BookingNode newNode = new BookingNode(booking);
-        if (head == null) {
-            head = newNode;
-        } else {
-            BookingNode temp = head;
-            while (temp.next != null) {
-                temp = temp.next;
+    // 3.1. Load data from file
+    public void loadBookingFromFile(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                String bcode = parts[0];
+                String tcode = parts[1];
+                String pcode = parts[2];
+                String odate = parts[3];
+                int paid = Integer.parseInt(parts[4]);
+                int seat = Integer.parseInt(parts[5]);
+                addBookingToEnd(bcode, tcode, pcode, odate, paid, seat);
             }
-            temp.next = newNode;
+            System.out.println("Dữ liệu booking đã được tải từ file " + filename);
+        } catch (IOException e) {
+            System.out.println("Lỗi khi tải dữ liệu từ file: " + e.getMessage());
         }
     }
 
-    // Hủy booking theo tcode và pcode
-    public boolean cancelBooking(String tcode, String pcode) {
-        if (head == null) {
-            return false;
+    // 3.2. Book bus
+    public void bookBus(String tcode, String pcode, int seatToBook) {
+        // Phương thức tìm tàu và hành khách có thể được gọi từ lớp TrainList và PassengerList tương ứng
+        Train foundTrain = TrainList.searchTrainByTcode(tcode);
+        Passenger foundPassenger = PassengerList.searchPassengerByPcode(pcode);
+
+        if (foundTrain == null) {
+            System.out.println("Không tìm thấy mã tàu " + tcode);
+            return;
         }
 
-        // Trường hợp hủy booking ở đầu danh sách
-        if (head.info.getTcode().equals(tcode) && head.info.getPcode().equals(pcode)) {
-            head = head.next;
-            return true;
+        if (foundPassenger == null) {
+            System.out.println("Không tìm thấy mã hành khách " + pcode);
+            return;
         }
 
-        // Tìm và hủy booking
+        if (seatToBook <= 0 || seatToBook > (foundTrain.seat - foundTrain.booked)) {
+            System.out.println("Số ghế đặt không hợp lệ");
+            return;
+        }
+
+        // Cập nhật thông tin tàu
+        foundTrain.booked += seatToBook;
+        foundTrain.seat -= seatToBook;
+
+        // Thêm booking mới
+        String bcode = generateBcode(); // Giả sử có hàm sinh mã booking
+        String odate = getCurrentDate(); // Lấy ngày hiện tại
+        int paid = 0; // Mặc định là chưa thanh toán
+        addBookingToEnd(bcode, tcode, pcode, odate, paid, seatToBook);
+
+        System.out.println("Đặt vé thành công cho hành khách " + pcode + " trên tàu " + tcode);
+    }
+
+    // 3.3. Display data
+    public void displayBookingList() {
         BookingNode current = head;
-        BookingNode prev = null;
-        while (current != null && !(current.info.getTcode().equals(tcode) && current.info.getPcode().equals(pcode))) {
-            prev = current;
+        while (current != null) {
+            System.out.println(current.booking);
             current = current.next;
         }
-
-        if (current != null) {
-            prev.next = current.next; // Bỏ qua node cần xóa
-            return true;
-        }
-        return false;
     }
 
-    // Cập nhật trạng thái thanh toán
-    public boolean updatePaymentStatus(String tcode, String pcode) {
-        BookingNode temp = head;
-        while (temp != null) {
-            if (temp.info.getTcode().equals(tcode) && temp.info.getPcode().equals(pcode)) {
-                temp.info.setPaid(true); // Đánh dấu trạng thái thanh toán
-                return true;
+    // 3.4. Save booking list to file
+    public void saveBookingListToFile(String filename) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+            BookingNode current = head;
+            while (current != null) {
+                Booking booking = current.booking;
+                bw.write(booking.bcode + "," + booking.tcode + "," + booking.pcode + "," + booking.odate + "," + booking.paid + "," + booking.seat);
+                bw.newLine();
+                current = current.next;
             }
-            temp = temp.next;
-        }
-        return false;
-    }
-
-    // Hiển thị danh sách booking
-    public void display() {
-        BookingNode temp = head;
-        while (temp != null) {
-            System.out.println(temp.info);
-            temp = temp.next;
+            System.out.println("Danh sách booking đã được lưu vào file " + filename);
+        } catch (IOException e) {
+            System.out.println("Lỗi khi lưu danh sách booking: " + e.getMessage());
         }
     }
 
-    public boolean bookSeat(String tcode, String pcode, int seatsToBook, TrainList trainList) {
-        Train train = trainList.searchByTcode(tcode);
-        if (train != null && train.getSeat() >= seatsToBook) {
-            train.setBooked(train.getBooked() + seatsToBook); // Cập nhật số ghế đã đặt
-            train.setSeat(train.getSeat() - seatsToBook); // Giảm số ghế còn lại
-            return true;
+    // 3.5. Sort by tcode + pcode
+    public void sortBookingsByTcodeAndPcode() {
+        if (head == null || head.next == null) {
+            return; // Không cần sắp xếp nếu danh sách rỗng hoặc chỉ có 1 phần tử
         }
-        return false;
+
+        boolean sorted;
+        do {
+            sorted = true;
+            BookingNode current = head;
+            while (current.next != null) {
+                if (current.booking.tcode.compareTo(current.next.booking.tcode) > 0 ||
+                        (current.booking.tcode.equals(current.next.booking.tcode) &&
+                                current.booking.pcode.compareTo(current.next.booking.pcode) > 0)) {
+
+                    // Hoán đổi booking
+                    Booking temp = current.booking;
+                    current.booking = current.next.booking;
+                    current.next.booking = temp;
+                    sorted = false;
+                }
+                current = current.next;
+            }
+        } while (!sorted);
     }
 
-    public boolean cancelSeat(String tcode, String pcode, int seatsToCancel, TrainList trainList) {
-        Train train = trainList.searchByTcode(tcode);
-        if (train != null) {
-            train.setBooked(train.getBooked() - seatsToCancel); // Hoàn lại số ghế đã đặt
-            train.setSeat(train.getSeat() + seatsToCancel); // Tăng số ghế còn lại
-            return true;
+    // 3.6. Pay booking by tcode + pcode
+    public void payBooking(String tcode, String pcode) {
+        BookingNode current = head;
+        while (current != null) {
+            if (current.booking.tcode.equals(tcode) && current.booking.pcode.equals(pcode)) {
+                if (current.booking.paid == 0) {
+                    current.booking.paid = 1;
+                    System.out.println("Booking cho tàu " + tcode + " và hành khách " + pcode + " đã được thanh toán.");
+                } else {
+                    System.out.println("Booking đã được thanh toán trước đó.");
+                }
+                return;
+            }
+            current = current.next;
         }
-        return false;
+        System.out.println("Không tìm thấy booking với tcode: " + tcode + " và pcode: " + pcode);
     }
+
+    // Phương thức thêm booking vào cuối danh sách
+    private void addBookingToEnd(String bcode, String tcode, String pcode, String odate, int paid, int seat) {
+        Booking newBooking = new Booking(bcode, tcode, pcode, odate, paid, seat);
+        BookingNode newNode = new BookingNode(newBooking);
+        if (head == null) {
+            head = newNode; // Nếu danh sách rỗng, gán head bằng node mới
+        } else {
+            BookingNode current = head;
+            while (current.next != null) {
+                current = current.next; // Tìm đến node cuối
+            }
+            current.next = newNode; // Gán node mới vào cuối danh sách
+        }
+    }
+
+    // Các phương thức hỗ trợ khác như generateBcode() và getCurrentDate() cũng nên được định nghĩa trong lớp này
 }
