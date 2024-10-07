@@ -92,7 +92,16 @@ class BookingList {
 
         System.out.println("Đặt vé thành công cho hành khách " + pcode + " trên tàu " + tcode);
     }
+    // Phương thức sinh mã booking
+    private String generateBcode() {
+        long currentTime = System.currentTimeMillis();
+        return "B" + currentTime;
+    }
 
+    // Phương thức lấy ngày hiện tại
+    private String getCurrentDate() {
+        return LocalDate.now().toString();
+    }
     // 3.3. Display data
     public void displayBookingList() {
         BookingNode current = head;
@@ -146,19 +155,33 @@ class BookingList {
 
     // 3.6. Pay booking by tcode + pcode
     public void payBooking(String tcode, String pcode) {
-        BookingNode current = head;
-        while (current != null) {
-            if (current.booking.tcode.equals(tcode) && current.booking.pcode.equals(pcode)) {
-                if (current.booking.paid == 0) {
-                    current.booking.paid = 1;
-                    System.out.println("Booking cho tàu " + tcode + " và hành khách " + pcode + " đã được thanh toán.");
-                } else {
-                    System.out.println("Booking đã được thanh toán trước đó.");
-                }
-                return;
-            }
-            current = current.next;
+        if (tcode == null || pcode == null) {
+            System.out.println("tcode hoặc pcode không được null");
+            return;
         }
+
+        BookingNode current = head; // Biến head là node đầu tiên trong danh sách liên kết
+
+        // Duyệt qua danh sách liên kết
+        while (current != null) {
+            // Kiểm tra nếu current.booking không phải là null
+            if (current.booking != null) {
+                // So sánh chuỗi tcode và pcode của booking hiện tại
+                if (tcode.equals(current.booking.tcode) && pcode.equals(current.booking.pcode)) {
+                    // Kiểm tra xem booking đã được thanh toán hay chưa
+                    if (current.booking.paid == 0) {
+                        current.booking.paid = 1;
+                        System.out.println("Booking cho tàu " + tcode + " và hành khách " + pcode + " đã được thanh toán.");
+                    } else {
+                        System.out.println("Booking đã được thanh toán trước đó.");
+                    }
+                    return; // Thoát khỏi vòng lặp sau khi tìm thấy
+                }
+            }
+            current = current.next; // Di chuyển đến node tiếp theo
+        }
+
+        // Nếu không tìm thấy booking
         System.out.println("Không tìm thấy booking với tcode: " + tcode + " và pcode: " + pcode);
     }
 
