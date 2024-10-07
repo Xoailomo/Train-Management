@@ -9,11 +9,23 @@ import Entity.Booking;
  * @author phank
  */
 class BookingNode {
-    public Booking info; // Lưu trữ thông tin đặt vé
-    public BookingNode next; // Con trỏ tới node tiếp theo
+    String bcode;
+    String pcode;
+    String odate;
+    int paid;
+    int seat;
+    BookingNode next;
 
-    public BookingNode(Booking data) {
-        this.data = data;
+    public BookingNode(String bcode, String pcode, String odate, int paid, int seat) {
+        this.bcode = bcode;
+        this.pcode = pcode;
+        this.odate = odate;
+        this.paid = paid;
+        this.seat = seat;
         this.next = null;
+    }
+
+    public String toString() {
+        return bcode + " " + pcode + " " + odate + " " + paid + " " + seat;
     }
 }

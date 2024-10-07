@@ -14,172 +14,68 @@ import Entity.Train;
 import java.io.*;
 import java.util.Scanner;
 
-public class TrainList {
-
+class TrainList {
     TrainNode head;
-    TrainNode tail;
 
     public TrainList() {
         this.head = null;
-        this.tail = null;
-    }
-
-    public boolean isEmpty() {
-        return head == null;
-    }
-
-    public int getSize() {
-        TrainNode x = head;
-        int count = 0;
-        while (x != null) {
-            count++;
-            x = x.next;
-        }
-        return count;
-    }
-    public TrainNode get(Train x) {
-        TrainNode p = head;
-        while (p != null) {
-            if (p.info == x) {
-                return p;
-            } else {
-                p = p.next;
-            }
-        }
-        return null;
-    }
-    public TrainNode getNext(TrainNode p) {
-        if (p.next != null) {
-            return p.next;
-        } else {
-            return null;
-        }
-    }
-
-    public TrainNode getPrev(TrainNode p) {
-        TrainNode x = head;
-        while (x != null) {
-            if (x.next == p) {
-                break;
-            } else {
-                x = x.next;
-            }
-        }
-        return x;
-    }
-    public TrainNode getByIndex(int index) {
-        TrainNode p = head;
-        int i = 0;
-        while (p != null && i != index) {
-            i++;
-            p = p.next;
-
-        }
-        return p;
-    }
-    public void removeFirst() {
-        head.next = null;
-        head = getNext(head);
-    }
-
-    public void removeLast() {
-        tail = getPrev(tail);
-        tail.next = null;
-    }
-    
-
-    void visit(TrainNode p) {
-        System.out.print(p.info + " ");
-
-    }
-
-    void traverse() {
-        TrainNode p = head;
-        while (p != null) {
-            visit(p);
-            p = p.next;
-
-        }
-        System.out.println(" ");
-
     }
 
     // Thêm tàu vào cuối danh sách
-    public void addTrainToEnd(Train train) {
-        TrainNode newNode = new TrainNode(train);
-        if (isEmpty()) {
-            head = tail = newNode;
+    public void addTrainToEnd(String tcode, String name, String dstation, String astation, double dtime, int seat, int booked, double atime) {
+        TrainNode newTrain = new TrainNode(tcode, name, dstation, astation, dtime, seat, booked, atime);
+        if (head == null) {
+            head = newTrain;
         } else {
-            tail.next = newNode;
-            tail = newNode;
-        }
-    }
-
-    // Hiển thị toàn bộ thông tin tàu
-    public void displayAllTrains() {
-        TrainNode p = head;
-        while (p != null) {
-            System.out.println(p.info.toString());
-            p = p.next;
-        }
-    }
-
-    // Lưu danh sách tàu vào file
-    public void saveToFile(String filename) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
-        TrainNode p = head;
-        while (p != null) {
-            writer.write(p.info.tcode + "," + p.info.name + "," + p.info.dstation + ","
-                    + p.info.dtime + "," + p.info.seat + "," + p.info.booked + "," + p.info.atime);
-            writer.newLine();
-            p = p.next;
-        }
-        writer.close();
-    }
-
-    // Tìm kiếm tàu theo mã tcode
-    public Train searchByTcode(String tcode) {
-        TrainNode p = head;
-        while (p != null) {
-            if (p.info.tcode.equals(tcode)) {
-                return p.info; // Trả về tàu tìm thấy
+            TrainNode temp = head;
+            while (temp.next != null) {
+                temp = temp.next;
             }
-            p = p.next;
+            temp.next = newTrain;
         }
-        return null; // Không tìm thấy
     }
 
-    // Xoá tàu theo mã tcode
+    // Hiển thị tất cả các tàu
+    public void displayTrains() {
+        TrainNode temp = head;
+        while (temp != null) {
+            System.out.println(temp.toString());
+            temp = temp.next;
+        }
+    }
+
+    // Tìm kiếm tàu theo tcode
+    public TrainNode searchByTcode(String tcode) {
+        TrainNode temp = head;
+        while (temp != null) {
+            if (temp.tcode.equals(tcode)) {
+                return temp;
+            }
+            temp = temp.next;
+        }
+        return null;
+    }
+
+    // Xóa tàu theo tcode
     public void deleteByTcode(String tcode) {
-        if (isEmpty()) {
-            return;
-        }
+        if (head == null) return;
 
-        // Nếu tàu cần xoá ở đầu danh sách
-        if (head.info.tcode.equals(tcode)) {
+        if (head.tcode.equals(tcode)) {
             head = head.next;
-            if (head == null) {
-                tail = null;
-            }
             return;
         }
 
-        // Tìm nút trước nút cần xoá
-        TrainNode prev = null;
-        TrainNode p = head;
-        while (p != null) {
-            prev = p;
-            p = p.next;
+        TrainNode temp = head;
+        while (temp.next != null && !temp.next.tcode.equals(tcode)) {
+            temp = temp.next;
         }
 
-        // Xoá tàu nếu tìm thấy
-        if (p != null) {
-            prev.next = p.next;
-            if (p == tail) {
-                tail = prev; // Cập nhật tail nếu tàu ở cuối danh sách bị xoá
-            }
+        if (temp.next != null) {
+            temp.next = temp.next.next;
         }
     }
+}
+
 
     // Sắp xếp tàu theo mã tcode
     public void sortByTcode() {
@@ -304,4 +200,48 @@ public class TrainList {
         }
         throw new Exception("Not found");
     }
+public void addTrainToBeginning(String tcode, String name, String dstation, String astation, double dtime, int seat, int booked, double atime) {
+    TrainNode newTrain = new TrainNode(tcode, name, dstation, astation, dtime, seat, booked, atime);
+    if (head == null) {
+        head = newTrain;
+    } else {
+        newTrain.next = head;
+        head = newTrain;
+    }
+}
+public void saveToFile(String filename) {
+    try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+        TrainNode temp = head;
+        while (temp != null) {
+            bw.write(temp.toString());
+            bw.newLine();
+            temp = temp.next;
+        }
+        System.out.println("Dữ liệu đã được lưu vào file " + filename);
+    } catch (IOException e) {
+        System.out.println("Lỗi khi lưu vào file: " + e.getMessage());
+    }
+}
+public void loadFromFile(String filename) {
+    try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+        String line;
+        while ((line = br.readLine()) != null) {
+            String[] parts = line.split(" ");
+            // Giả sử các phần tử của mảng parts là tcode, name, dstation, astation, dtime, atime, seat, booked.
+            String tcode = parts[0];
+            String name = parts[1];
+            String dstation = parts[2];
+            String astation = parts[3];
+            double dtime = Double.parseDouble(parts[4]);
+            double atime = Double.parseDouble(parts[5]);
+            int seat = Integer.parseInt(parts[6]);
+            int booked = Integer.parseInt(parts[7]);
+            addTrainToEnd(tcode, name, dstation, astation, dtime, seat, booked, atime);
+        }
+        System.out.println("Dữ liệu đã được tải từ file " + filename);
+    } catch (IOException e) {
+        System.out.println("Lỗi khi tải từ file: " + e.getMessage());
+    }
+}
+
 }

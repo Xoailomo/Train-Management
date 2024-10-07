@@ -8,21 +8,21 @@ import Entity.Passenger;
  *
  * @author phank
  */
-public class PassengerNode {
+class PassengerNode {
+    String pcode;
+    String name;
+    String phone;
+    PassengerNode next;
 
-   public  Passenger info;
-    public PassengerNode next;
-
-    public PassengerNode() {
+    public PassengerNode(String pcode, String name, String phone) {
+        this.pcode = pcode;
+        this.name = name;
+        this.phone = phone;
+        this.next = null;
     }
 
-    public PassengerNode(Passenger info){
-        this.info = info;
-        next = null;
+    public String toString() {
+        return pcode + " " + name + " " + phone;
     }
-    public PassengerNode(Passenger info, PassengerNode next) {
-        this.info = info;
-        this.next = next;
-    }
-    
 }
+
