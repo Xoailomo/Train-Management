@@ -44,7 +44,7 @@ public class Passenger {
         if (phone.matches("\\d+")) { //xác định sđt chỉ chứa các chữ số
             this.phone = phone;
         } else {
-            throw new IllegalArgumentException("Số điện thoại chỉ chứa chữ số");
+            throw new IllegalArgumentException("Phone is digit");
         }
     }
 
