@@ -11,8 +11,8 @@ import Entity.Booking;
 class BookingNode {
     String bcode;
     String pcode;
-    String odate;
-    int paid;
+    Date odate;
+    Date paid;
     int seat;
     BookingNode next;
 

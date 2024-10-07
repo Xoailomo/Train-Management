@@ -18,8 +18,8 @@ class Booking {
     String bcode; // Mã booking
     String tcode; // Mã tàu
     String pcode; // Mã hành khách
-    String odate; // Ngày đặt vé
-    int paid; // Trạng thái thanh toán (0 - chưa thanh toán, 1 - đã thanh toán)
+    Date odate; // Ngày đặt vé
+    Date paid; // Trạng thái thanh toán (0 - chưa thanh toán, 1 - đã thanh toán)
     int seat; // Số ghế đã đặt
 
     public Booking(String bcode, String tcode, String pcode, String odate, int paid, int seat) {
