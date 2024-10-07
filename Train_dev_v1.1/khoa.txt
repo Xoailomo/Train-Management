@@ -1,7 +1,0 @@
-d| f| g| h| 5.0| 7| 6| 8.0
-e| f| g| h| 4.0| 6| 5| 7.0
-2| d| t| g| 4.0| 6| 5| 7.0
-1| d| f| g| 4.0| 5| 4| 6.0
-
-1| dfdfdfdfdfdfd| dfdfdfdf| dfdfdfdfdf| 3.0| 5| 4| 6.0
-
