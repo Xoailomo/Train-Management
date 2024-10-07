@@ -24,17 +24,16 @@ class BookingNode {
         this.seat = seat;
         this.next = null;
     }
-
+    {
+        Booking booking;  // Chứa đối tượng booking
+        BookingNode next; // Tham chiếu đến node tiếp theo
+    
+        public BookingNode(Booking booking) {
+            this.booking = booking;
+            this.next = null;
+        }
+    }
     public String toString() {
         return bcode + " " + pcode + " " + odate + " " + paid + " " + seat;
-    }
-}
-public class BookingNode {
-    Booking booking;  // Chứa đối tượng booking
-    BookingNode next; // Tham chiếu đến node tiếp theo
-
-    public BookingNode(Booking booking) {
-        this.booking = booking;
-        this.next = null;
     }
 }

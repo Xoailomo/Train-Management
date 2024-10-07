@@ -5,6 +5,7 @@
 package linkedList;
 
 import Entity.Booking;
+import Entity.Passenger;
 import Entity.Train;
 
 /**
@@ -12,6 +13,7 @@ import Entity.Train;
  * @author phank
  */
 import java.io.*;
+import java.time.LocalDate;
 import java.util.Date;
 
 class Booking {
@@ -62,8 +64,8 @@ class BookingList {
     // 3.2. Book bus
     public void bookBus(String tcode, String pcode, int seatToBook) {
         // Phương thức tìm tàu và hành khách có thể được gọi từ lớp TrainList và PassengerList tương ứng
-        Train foundTrain = TrainList.searchTrainByTcode(tcode);
-        Passenger foundPassenger = PassengerList.searchPassengerByPcode(pcode);
+        Train foundTrain = TrainList.searchByTcode(String tcode);
+        Passenger foundPassenger = PassengerList.searchByPcode(String pcode);
 
         if (foundTrain == null) {
             System.out.println("Không tìm thấy mã tàu " + tcode);
