@@ -22,7 +22,7 @@ class Booking {
     Date paid; // Trạng thái thanh toán (0 - chưa thanh toán, 1 - đã thanh toán)
     int seat; // Số ghế đã đặt
 
-    public Booking(String bcode, String tcode, String pcode, String odate, int paid, int seat) {
+    public Booking(String bcode, String tcode, String pcode, Date odate, Date paid, int seat) {
         this.bcode = bcode;
         this.tcode = tcode;
         this.pcode = pcode;

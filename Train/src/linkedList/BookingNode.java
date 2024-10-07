@@ -16,7 +16,7 @@ class BookingNode {
     int seat;
     BookingNode next;
 
-    public BookingNode(String bcode, String pcode, String odate, int paid, int seat) {
+    public BookingNode(String bcode, String pcode, Date odate, Date paid, int seat) {
         this.bcode = bcode;
         this.pcode = pcode;
         this.odate = odate;
@@ -27,5 +27,14 @@ class BookingNode {
 
     public String toString() {
         return bcode + " " + pcode + " " + odate + " " + paid + " " + seat;
+    }
+}
+public class BookingNode {
+    Booking booking;  // Chứa đối tượng booking
+    BookingNode next; // Tham chiếu đến node tiếp theo
+
+    public BookingNode(Booking booking) {
+        this.booking = booking;
+        this.next = null;
     }
 }
