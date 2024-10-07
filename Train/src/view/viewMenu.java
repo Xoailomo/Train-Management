@@ -54,7 +54,7 @@ public class viewMenu {
         for (int i = 0; i < content.length; i++) {
             System.out.println((i + 1) + ". " + content[i]);
         }
-        System.out.println("0. extit");
+        System.out.println("0. exit");
     }
 
     // hiển thị menu của booking list
