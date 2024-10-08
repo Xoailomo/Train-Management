@@ -130,34 +130,4 @@ public class fileIO {
         }
     }
 
-//    // load file for booking
-//    public void loadBookingData(String file) {
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        String data = readFromTxt(file);
-//        String[] lines = data.split("\n");
-//        for (String line : lines) {
-//            System.out.println("Processing line: " + line);
-//            String[] bookingInfo = line.split("\\|\\s*");
-//
-//            if (bookingInfo.length >= 5) {
-//                for (int i = 0; i < bookingInfo.length; i++) {
-//                    bookingInfo[i] = bookingInfo[i].trim();
-//                }
-//                String bcode = bookingInfo[0];
-//                String tcode = bookingInfo[0];
-//                String pcode = bookingInfo[1];
-//                // Parse the odate string to Date
-//                Date odate = null;
-//                try {
-//                    odate = dateFormat.parse(bookingInfo[2]);
-//                } catch (ParseException e) {
-//                    System.out.println("Error parsing date for booking: " + bcode + ". Skipping this entry.");
-//                    continue;
-//                }
-//                int paid = Integer.parseInt(bookingInfo[4]);
-//                int seat = Integer.parseInt(bookingInfo[5]);
-//                bl.addBookingToEnd(booking);
-//            }
-//        }
-//    }
 }
