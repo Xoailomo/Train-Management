@@ -240,7 +240,7 @@ public class PassengerList {
 
         // If no booking was found
         if (!found) {
-            System.out.println("No bookings found for train code: " + pcode);
+            System.out.println("No bookings found for p code: " + pcode);
         }
         return null;
     }
