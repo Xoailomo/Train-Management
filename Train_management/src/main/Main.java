@@ -154,7 +154,8 @@ public class Main {
                                 pl.searchByName(name);
                                 break;
                             case 8: // search trains by pcode
-                                pcode = inp.getString("Enter pcode: ", "Error", "pls input String", "\\d+([a-zA-Z]*)?");
+                                System.out.print("Search booked by pcode: ");
+                                pcode = sc.nextLine();                                
                                 pl.searchBookedByPcode(pcode);
                                 break;
                         }
