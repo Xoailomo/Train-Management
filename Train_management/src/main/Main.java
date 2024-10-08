@@ -7,7 +7,6 @@ import view.InputData;
 import linkedList.BookingList;
 import linkedList.PassengerList;
 import linkedList.TrainList;
-import File.fileIO;
 import java.util.Scanner;
 import linkedList.BookingNode;
 import linkedList.PassengerNode;
@@ -21,7 +20,6 @@ public class Main {
 
     private static viewMenu view = new viewMenu();
     private static InputData inp = new InputData();
-    private static fileIO fo = new fileIO();
     private static Scanner sc = new Scanner(System.in);
     private static TrainList tl = new TrainList();
     private static PassengerList pl = new PassengerList();
@@ -57,7 +55,7 @@ public class Main {
                             case 1: // load
                                 System.out.println("Enter name: ");
                                 String fn = sc.nextLine();
-                                fo.loadTrainData(fn);
+                                tl.loadFromFile(fn);
                                 break;
                             case 2: // add to head
                                 tl.addTrainToHead(getNTrain());
@@ -67,7 +65,7 @@ public class Main {
                                 break;
                             case 4: // save train list to file
                                 fn = sc.nextLine();
-                                fo.saveData(0, fn);
+                                tl.saveToFile(fn);
                                 break;
                             case 5: // search by tcode
                                 System.out.print("Search by tcode: ");
@@ -84,8 +82,8 @@ public class Main {
                                 System.out.print(">>Sort by tcode ");
                                 tl.sortByTcode();
                                 break;
-                            case 8: // add to the first
-                                System.out.println("Add train to the first ");
+                            case 8: // add to the end
+                                System.out.println("Add train to the end ");
                                 tl.addTrainToEnd(getNTrain(), true);
                                 break;
                             case 9: // add before position k
@@ -108,7 +106,7 @@ public class Main {
                             case 12: // search booked by tcode
                                 System.out.print("Search booked by tcode; ");
                                 code = sc.nextLine();
-                                tl.searchBookedByTcode(code);
+                                tl.searchBookedByTcode(code, tl, pl, bl);
                                 break;
                         }
                     }
@@ -125,7 +123,7 @@ public class Main {
                             case 1: // load 
                                 System.out.print("Enter file name: ");
                                 String fn = sc.nextLine();
-                                fo.loadPassengerData(fn);
+                                pl.loadFromFile(fn);
                                 break;
                             case 2: // add to the end *****
                                 System.out.println(">>Add passenger to the end");
@@ -138,7 +136,7 @@ public class Main {
                             case 4: // save to file
                                 System.out.println("Enter file name: ");
                                 fn = sc.nextLine();
-                                fo.saveData(1, fn);
+                                tl.saveToFile(fn);
                                 break;
                             case 5: // search by pcode
                                 System.out.println("Search by pcode: ");
@@ -156,8 +154,9 @@ public class Main {
                                 pl.searchByName(name);
                                 break;
                             case 8: // search trains by pcode
-                                pcode = inp.getString("Enter pcode: ", "Error", "pls input String", "\\w\\d+");
-                                pl.searchByPcode(pcode);
+                                System.out.print("Search booked by pcode: ");
+                                pcode = sc.nextLine();                                
+                                pl.searchBookedByPcode(pcode);
                                 break;
                         }
                     }
@@ -182,7 +181,7 @@ public class Main {
                                 String tcode = sc.nextLine();
                                 System.out.println("Enter pcode: ");
                                 String pcode = sc.nextLine();
-                                int seatToBook = inp.getInt("Enter seat to book: ", "", "pls input integer", 0, Integer.MAX_VALUE);
+                                int seatToBook = inp.getInt("Enter seat to book: ", "", "pls input integer", 0, Integer.MAX_VALUE);                                
                                 bl.bookBus(tcode, pcode, seatToBook, tl, pl);
                                 break;
                             case 3: // display data
@@ -198,8 +197,10 @@ public class Main {
                                 bl.sortBookings();
                                 break;
                             case 6: // pay booking by tcode abd pcode
-                                tcode = null;
-                                pcode = null;
+                                System.out.println("Enter tcode");
+                                tcode = sc.nextLine();
+                                System.out.println("Enter pcode");
+                                pcode = sc.nextLine();
                                 bl.payBooking(tcode, pcode);
                                 break;
                         }

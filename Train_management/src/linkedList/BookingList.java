@@ -16,6 +16,7 @@ import java.io.*;
 import java.util.*;
 
 public class BookingList {
+
     public BookingNode head;
 
     public BookingList() {
@@ -26,7 +27,7 @@ public class BookingList {
     public void addBookingToEnd(Booking booking) {
         BookingNode newNode = new BookingNode(booking);
         if (head == null) {
-            head = newNode; 
+            head = newNode;
         } else {
             BookingNode current = head;
             while (current.next != null) {
@@ -36,8 +37,9 @@ public class BookingList {
         }
     }
 
-
     // 3.1. Load data from file
+    // 3.1. Load data from file
+// 3.1. Load data from file
     public void loadFromFile(String filename) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
@@ -118,15 +120,17 @@ public class BookingList {
 
     // 3.5. Sort by tcode + pcode
     public void sortBookings() {
-        if (head == null) return;
+        if (head == null) {
+            return;
+        }
         BookingNode current, index;
         Booking temp;
 
         for (current = head; current.next != null; current = current.next) {
             for (index = current.next; index != null; index = index.next) {
-                if (current.info.getTcode().compareTo(index.info.getTcode()) > 0 ||
-                        (current.info.getTcode().equals(index.info.getTcode()) &&
-                                current.info.getPcode().compareTo(index.info.getPcode()) > 0)) {
+                if (current.info.getTcode().compareTo(index.info.getTcode()) > 0
+                        || (current.info.getTcode().equals(index.info.getTcode())
+                        && current.info.getPcode().compareTo(index.info.getPcode()) > 0)) {
 
                     temp = current.info;
                     current.info = index.info;
@@ -144,7 +148,7 @@ public class BookingList {
             if (current.info.getTcode().equals(tcode) && current.info.getPcode().equals(pcode)) {
                 if (!current.info.isPaid()) {
                     current.info.setPaidDate(); // mark as paid
-                    System.out.println("Booking for train " + tcode + " and passenger " + pcode + " is paid.");
+                    System.out.println("Booking for train " + tcode + " and passenger " + pcode + "  paid success!..");
                 } else {
                     System.out.println("Already paid.");
                 }

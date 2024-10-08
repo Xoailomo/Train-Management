@@ -6,7 +6,16 @@ package linkedList;
 
 import Entity.Booking;
 import Entity.Passenger;
+import Entity.Train;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
+import static linkedList.TrainList.head;
+import static linkedList.TrainList.isEmpty;
+import static linkedList.TrainList.tail;
 
 public class PassengerList {
 
@@ -100,6 +109,48 @@ public class PassengerList {
         return true;
     }
 
+    // add train to tail
+    public void addToTail(Passenger x) {
+        PassengerNode q = new PassengerNode(x);
+        if (isEmpty()) {
+            head = tail = q;
+        } else {
+            tail.next = q;
+            tail = q;
+        }
+    }
+
+    // 2.1 load from filr passengers.txt
+    public void loadFromFile(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
+                String[] parts = line.split("\\|\\s*");
+                if (parts.length < 3) {
+                    System.out.println("Invalid line: " + line);
+                    continue;
+                }
+
+                String pcode = parts[0].trim();
+                String name = parts[1].trim();
+                String phone = parts[2].trim();
+                if (pcode.isEmpty() || name.isEmpty() || phone.isEmpty()) {
+                    System.out.println("Invalid line (empty values): " + line);
+                    continue;
+                }
+                Passenger pa = new Passenger(pcode, name, phone);
+                addToTail(pa);
+            }
+            System.out.println("Load successfully " + filename);
+        } catch (IOException e) {
+            System.out.println("Load error: " + e.getMessage());
+        }
+    }
+
     // 2.2. Input & add to the end
     public void addToTheEnd(PassengerNode x) {
         if (head == null) {
@@ -126,12 +177,29 @@ public class PassengerList {
         System.out.println();
     }
 
+    // 2.4 save to file
+    public void saveToFile(String filename) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+            PassengerNode current = head;
+            while (current != null) {
+                Passenger pa = current.info;
+                bw.write(pa.getPcode() + "| " + pa.getName() + "| "
+                        + pa.getPhone());
+                bw.newLine();
+                current = current.next;
+            }
+            System.out.println("Save to success to file " + filename);
+        } catch (IOException e) {
+            System.out.println("Save file error" + e.getMessage());
+        }
+    }
+
     //2.5. Search by pcode
     public static Passenger searchByPcode(String pcode) {
         PassengerNode p = head;
         while (p != null) {
             if (p.info.pcode.equals(pcode)) {
-                System.out.println("Found passenger: " + p.info);
+                System.out.println("Found passenger");
                 return p.info;
             }
             p = p.next;
@@ -192,7 +260,11 @@ public class PassengerList {
 
     // 2.7. Search by name
     public void searchByName(String name) {
-        name = name.trim().toLowerCase();
+        Scanner sc = new Scanner(System.in);
+
+        System.out.println(" ----- Search by Name -----");
+        System.out.print("Enter name to search: ");
+        name = sc.nextLine().trim().toLowerCase();
         PassengerNode p = head;
         boolean valid = false;
         while (p != null) {
@@ -213,7 +285,7 @@ public class PassengerList {
         // Add more details as necessary
     }
 
-    //2.8 Search trains by pcode
+//    //2.8 Search trains by pcode
     public Passenger searchBookedByPcode(String pcode) {
         BookingList bl = new BookingList();
         BookingNode current = bl.head;
