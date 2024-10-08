@@ -131,7 +131,7 @@ public class PassengerList {
         PassengerNode p = head;
         while (p != null) {
             if (p.info.pcode.equals(pcode)) {
-                System.out.println("Found passenger");
+                System.out.println("Found passenger: " + p.info);
                 return p.info;
             }
             p = p.next;
@@ -192,11 +192,7 @@ public class PassengerList {
 
     // 2.7. Search by name
     public void searchByName(String name) {
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println(" ----- Search by Name -----");
-        System.out.print("Enter name to search: ");
-        name = sc.nextLine().trim().toLowerCase();
+        name = name.trim().toLowerCase();
         PassengerNode p = head;
         boolean valid = false;
         while (p != null) {
