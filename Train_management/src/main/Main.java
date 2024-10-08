@@ -84,8 +84,8 @@ public class Main {
                                 System.out.print(">>Sort by tcode ");
                                 tl.sortByTcode();
                                 break;
-                            case 8: // add to the end
-                                System.out.println("Add train to the end ");
+                            case 8: // add to the first
+                                System.out.println("Add train to the first ");
                                 tl.addTrainToEnd(getNTrain(), true);
                                 break;
                             case 9: // add before position k
