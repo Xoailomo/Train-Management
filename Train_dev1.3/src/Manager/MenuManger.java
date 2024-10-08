@@ -259,7 +259,7 @@ public class MenuManger {
         view.loadPassengerData(2);
         do {
             pa.phone = inp.getString("",
-                    "10 so thoi", "pls integer",
+                    "Error", "pls integer",
                     "\\d+");
             if (llp.isPhoneUnique(pa.phone)) {
                 break;
