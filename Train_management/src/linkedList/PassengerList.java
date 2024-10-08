@@ -108,6 +108,7 @@ public class PassengerList {
         }
         return true;
     }
+
     // add train to tail
     public void addToTail(Passenger x) {
         PassengerNode q = new PassengerNode(x);
@@ -118,28 +119,38 @@ public class PassengerList {
             tail = q;
         }
     }
+
     // 2.1 load from filr passengers.txt
     public void loadFromFile(String filename) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
+                line = line.trim();
+                if (line.isEmpty()) {
+                    continue;
+                }
                 String[] parts = line.split("\\|\\s*");
-                if (parts.length < 8) {
+                if (parts.length < 3) {
                     System.out.println("Invalid line: " + line);
                     continue;
                 }
 
-                String pcode = parts[0];
-                String name = parts[1];
-                String phone = parts[2];
-                Passenger pa = new Passenger(pcode,name,phone);
+                String pcode = parts[0].trim();
+                String name = parts[1].trim();
+                String phone = parts[2].trim();
+                if (pcode.isEmpty() || name.isEmpty() || phone.isEmpty()) {
+                    System.out.println("Invalid line (empty values): " + line);
+                    continue;
+                }
+                Passenger pa = new Passenger(pcode, name, phone);
                 addToTail(pa);
             }
             System.out.println("Load successfully " + filename);
         } catch (IOException e) {
-            System.out.println("Load error " + e.getMessage());
+            System.out.println("Load error: " + e.getMessage());
         }
     }
+
     // 2.2. Input & add to the end
     public void addToTheEnd(PassengerNode x) {
         if (head == null) {
@@ -165,7 +176,7 @@ public class PassengerList {
         }
         System.out.println();
     }
-    
+
     // 2.4 save to file
     public void saveToFile(String filename) {
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
@@ -173,7 +184,7 @@ public class PassengerList {
             while (current != null) {
                 Passenger pa = current.info;
                 bw.write(pa.getPcode() + "| " + pa.getName() + "| "
-                        + pa.getPhone() );
+                        + pa.getPhone());
                 bw.newLine();
                 current = current.next;
             }
