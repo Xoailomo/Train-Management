@@ -123,7 +123,7 @@ public class Main {
                             case 1: // load 
                                 System.out.print("Enter file name: ");
                                 String fn = sc.nextLine();
-                                tl.loadFromFile(fn);
+                                pl.loadFromFile(fn);
                                 break;
                             case 2: // add to the end *****
                                 System.out.println(">>Add passenger to the end");
@@ -154,7 +154,7 @@ public class Main {
                                 pl.searchByName(name);
                                 break;
                             case 8: // search trains by pcode
-                                pcode = inp.getString("Enter pcode: ", "Error", "pls input String", "\\w\\d+");
+                                pcode = inp.getString("Enter pcode: ", "Error", "pls input String", "\\d+([a-zA-Z]*)?");
                                 pl.searchBookedByPcode(pcode);
                                 break;
                         }
