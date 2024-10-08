@@ -35,7 +35,7 @@ public class viewMenu {
     public static void menuTrainList() {
         String content[] = {"Load from file", "Add to the head",
             "Display data", "Save list to file", "search by tcode",
-            "Delete by tcode", "Sort by tcode", "Add to the end",
+            "Delete by tcode", "Sort by tcode", "Add to the begin",
             "Add before position k", "Delete position k",
             "Search by name", "Search booked by tcode"};
         System.out.println("******** train menu ********");
