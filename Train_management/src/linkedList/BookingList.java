@@ -148,7 +148,7 @@ public class BookingList {
             if (current.info.getTcode().equals(tcode) && current.info.getPcode().equals(pcode)) {
                 if (!current.info.isPaid()) {
                     current.info.setPaidDate(); // mark as paid
-                    System.out.println("Booking for train " + tcode + " and passenger " + pcode + " is paid.");
+                    System.out.println("Booking for train " + tcode + " and passenger " + pcode + "  paid success!..");
                 } else {
                     System.out.println("Already paid.");
                 }
