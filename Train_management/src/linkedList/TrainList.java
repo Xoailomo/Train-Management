@@ -5,8 +5,13 @@
 package linkedList;
 
 import Entity.Booking;
+import Entity.Passenger;
 import Entity.Train;
-
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *
@@ -110,6 +115,34 @@ public class TrainList {
         }
     }
 
+    // 1.1 load from file
+    public void loadFromFile(String filename) {
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split("\\|\\s*");
+                if (parts.length < 8) {
+                    System.out.println("Invalid line: " + line);
+                    continue;
+                }
+
+                String tcode = parts[0];
+                String name = parts[1];
+                String dstation = parts[2];
+                String astation = parts[3];
+                double dtime = Double.parseDouble(parts[4]);
+                int seat = Integer.parseInt(parts[5]);
+                int booked = Integer.parseInt(parts[6]);
+                double atime = Double.parseDouble(parts[7]);
+                Train train = new Train(tcode, name, dstation, astation, dtime, seat, booked, atime);
+                addToTail(train);
+            }
+            System.out.println("Load successfully " + filename);
+        } catch (IOException e) {
+            System.out.println("Load error " + e.getMessage());
+        }
+    }
+
     // 1.2 Input & add to the end
     public static void addTrainToEnd(TrainNode newNode, boolean print) {
         if (newNode == null) {
@@ -125,6 +158,25 @@ public class TrainList {
         if (print == true) {
 
             System.out.println("TrainNode added to the end of the list successfully.");
+        }
+    }
+
+    // 1.4 save to trains.txt
+    public void saveToFile(String filename) {
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
+            TrainNode current = head;
+            while (current != null) {
+                Train train = current.info;
+                bw.write(train.getTcode() + "| " + train.getName() + "| "
+                        + train.getDstation() + "| " + train.getAstation() + "| "
+                        + train.getDtime() + "| " + train.getSeat() + "| " + train.getBooked() + "| "
+                        + train.getAtime());
+                bw.newLine();
+                current = current.next;
+            }
+            System.out.println("Save to success to file " + filename);
+        } catch (IOException e) {
+            System.out.println("Save file error" + e.getMessage());
         }
     }
 
@@ -313,28 +365,65 @@ public class TrainList {
     }
 
     //1.12 Search booked by tcode
-    public Train searchBookedByTcode(String tcode) {
-        BookingList bl = new BookingList();
-        BookingNode current = bl.head;
+//    public Train searchBookedByTcode(String tcode) {
+//        BookingList bl = new BookingList();
+//        BookingNode current = bl.head;
+//        boolean found = false;
+//        while (current != null) {
+//            if (current.info.getTcode().equals(tcode)) {
+//                found = true; // Mark as found
+//                Train train = TrainList.searchByTcode(tcode);
+//                if (train != null) {
+//                    System.out.println("Train Details: " + train); // Display train information
+//                } else {
+//                    System.out.println("Train not found for tcode: " + tcode);
+//                }
+//                System.out.println("Passengers who booked this train:");
+//                listPassengers(current.info);
+//            }
+//            current = current.next;
+//        }
+//
+//        if (!found) {
+//            System.out.println("No bookings found for train code: " + tcode);
+//        }
+//        return null;
+//    }
+    public Train searchBookedByTcode(String tcode, TrainList trainList, PassengerList passengerList, BookingList bookingList) {
+        // Tìm tàu theo mã tàu (tcode)
+        Train train = trainList.searchByTcode(tcode);
+
+        if (train == null) {
+            System.out.println("Train not found for tcode: " + tcode);
+            return null;
+        }
+
+        BookingNode current = bookingList.head;
         boolean found = false;
+
+        // Duyệt qua danh sách các booking để tìm các booking có tcode tương ứng
         while (current != null) {
             if (current.info.getTcode().equals(tcode)) {
-                found = true; // Mark as found
-                Train train = TrainList.searchByTcode(tcode);
-                if (train != null) {
-                    System.out.println("Train Details: " + train); // Display train information
+                found = true; // Đánh dấu đã tìm thấy booking
+                Passenger passenger = passengerList.searchByPcode(current.info.getPcode());
+
+                if (passenger != null) {
+                    System.out.println("Passenger who booked this train:");
+                    System.out.println("Passenger Code: " + passenger.getPcode() + ", Name: " + passenger.getName() + ", Seats booked: " + current.info.getSeat());
                 } else {
-                    System.out.println("Train not found for tcode: " + tcode);
+                    System.out.println("Passenger not found for pcode: " + current.info.getPcode());
                 }
-                System.out.println("Passengers who booked this train:");
-                listPassengers(current.info);
             }
             current = current.next;
         }
 
         if (!found) {
             System.out.println("No bookings found for train code: " + tcode);
+        } else {
+            System.out.println("Train Details: " + train); // Hiển thị thông tin tàu sau khi tìm thấy các booking
         }
-        return null;
+
+        return train; // Trả về đối tượng train nếu có
     }
+
 }
