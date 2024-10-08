@@ -42,7 +42,7 @@ public class BookingList {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] parts = line.split(" ");
+                String[] parts = line.split("\\|\\S*");
                 String tcode = parts[0];
                 String pcode = parts[1];
                 int seat = Integer.parseInt(parts[2]);
@@ -105,8 +105,8 @@ public class BookingList {
             BookingNode current = head;
             while (current != null) {
                 Booking booking = current.info;
-                bw.write(booking.getTcode() + " " + booking.getPcode() + " "
-                        + booking.getSeat() + " " + booking.isPaid());
+                bw.write(booking.getTcode() + "| " + booking.getPcode() + "| "
+                        + booking.getSeat() + "| " + booking.isPaid());
                 bw.newLine();
                 current = current.next;
             }
