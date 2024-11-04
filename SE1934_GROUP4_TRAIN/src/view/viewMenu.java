@@ -33,9 +33,9 @@ public class viewMenu {
 
     // hiển thị menu của train
     public static void menuTrainList() {
-        String content[] = {"Load from file", "Add to the head",
+        String content[] = {"Load from file", "Add to the end",
             "Display data", "Save list to file", "search by tcode",
-            "Delete by tcode", "Sort by tcode", "Add to the end",
+            "Delete by tcode", "Sort by tcode", "Add to the head",
             "Add before position k", "Delete position k",
             "Search by name", "Search booked by tcode"};
         System.out.println("******** train menu ********");

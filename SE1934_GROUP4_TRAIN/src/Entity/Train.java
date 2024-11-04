@@ -60,6 +60,22 @@ public class Train implements Serializable {
         this.booked = booked;
     }
 
+    public double getDtime() {
+        return dtime;
+    }
+
+    public String getDstation() {
+        return dstation;
+    }
+
+    public String getAstation() {
+        return astation;
+    }
+
+    public double getAtime() {
+        return atime;
+    }
+
     @Override
     public String toString() {
         return "Train Code: " + tcode

@@ -57,8 +57,9 @@ public class Main {
                                 String fn = sc.nextLine();
                                 tl.loadFromFile(fn);
                                 break;
-                            case 2: // add to head
-                                tl.addTrainToHead(getNTrain());
+                            case 2: // add to end
+                                System.out.println(">>Add to the end");
+                                tl.addTrainToEnd(getNTrain(), true);
                                 break;
                             case 3: // display data
                                 view.displayAllTrain(tl);
@@ -79,12 +80,13 @@ public class Main {
                                 tl.deleteByTcode(code);
                                 break;
                             case 7: // sort by tcode
-                                System.out.print(">>Sort by tcode ");
+                                System.out.println(">>Sort by tcode ");
                                 tl.sortByTcode();
                                 break;
-                            case 8: // add to the end
-                                System.out.println("Add train to the end ");
-                                tl.addTrainToEnd(getNTrain(), true);
+                            case 8: // add to the head
+                                System.out.println(">>Add to head: ");
+                                tl.addTrainToHead(getNTrain());
+                                
                                 break;
                             case 9: // add before position k
                                 System.out.println(">>Add before position");
@@ -97,14 +99,14 @@ public class Main {
                                 tl.deletePosition(k);
                                 break;
                             case 11: // search by name
-                                System.out.println(">>Search by train name ");
-                                String name = inp.getString("Enter train name",
+                                System.out.println(">>Search by train name: ");
+                                String name = inp.getString("Enter train name: ",
                                         "err", "invalid",
                                         "[A-Za-z\\s]+");
                                 tl.searchByName(name);
                                 break;
                             case 12: // search booked by tcode
-                                System.out.print("Search booked by tcode; ");
+                                System.out.print("Search booked by tcode: ");
                                 code = sc.nextLine();
                                 tl.searchBookedByTcode(code, tl, pl, bl);
                                 break;
@@ -154,9 +156,8 @@ public class Main {
                                 pl.searchByName(name);
                                 break;
                             case 8: // search trains by pcode
-                                System.out.print("Search booked by pcode: ");
-                                pcode = sc.nextLine();                                
-                                pl.searchBookedByPcode(pcode);
+                                System.out.println("Not done :((");
+                                
                                 break;
                         }
                     }
@@ -247,6 +248,7 @@ public class Main {
         train.atime = inp.getDoubleCond(train.dtime, 24);
 
         ntrain.info = train;
+        System.out.println("Add successs!");
         return ntrain;
     }
 

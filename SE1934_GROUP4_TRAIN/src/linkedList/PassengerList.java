@@ -285,36 +285,7 @@ public class PassengerList {
         // Add more details as necessary
     }
 
-//    //2.8 Search trains by pcode
-    public Passenger searchBookedByPcode(String pcode) {
-        BookingList bl = new BookingList();
-        BookingNode current = bl.head;
-        boolean found = false; // Flag to check if any booking was found
-
-        while (current != null) {
-            // Check if the booking's train code matches the input pcode
-            if (current.info.getPcode().equals(pcode)) {
-                found = true; // Mark as found
-                // Get passenger details by pcode
-                Passenger passenger = PassengerList.searchByPcode(pcode);
-                if (passenger != null) {
-                    System.out.println("Passenger Details: " + passenger); // Display passenger information
-                } else {
-                    System.out.println("Passenger not found for pcode: " + pcode);
-                }
-
-                // List train
-                System.out.println("Passengers who booked this train:");
-                listTrain(current.info); // Call to display train info
-            }
-            current = current.next; // Move to the next booking
-        }
-
-        // If no booking was found
-        if (!found) {
-            System.out.println("No bookings found for train code: " + pcode);
-        }
-        return null;
-    }
+//    // 2.8 Search trains by pcode
+    
 
 }
